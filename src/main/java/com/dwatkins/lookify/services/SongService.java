@@ -21,7 +21,7 @@ public class SongService {
 	}
 	
 	public List<Song> topTenSongs() {
-		return songRepository.findTop10OrderByRatingDesc();
+		return songRepository.findTop10ByOrderByRatingDesc();
 	}
 	
 	public List<Song> artistSearch(String search) {

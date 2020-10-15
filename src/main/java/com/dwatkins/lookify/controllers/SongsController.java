@@ -26,29 +26,30 @@ public class SongsController {
 	
 	@RequestMapping("/")
 	public String home() {
-		return "home.jsp";
+		return "songs/home.jsp";
 	}
 	
 	@RequestMapping("/dashboard")
 	public String dashboard(Model model) {
 		List<Song> allSongs = songService.allSongs();
 		model.addAttribute("songs", allSongs);
-		return "dashboard.jsp";
+		return "songs/dashboard.jsp";
 	}
 	
-	@RequestMapping(value="/dashboard", method=RequestMethod.POST)
+	@RequestMapping(value="/songs", method=RequestMethod.POST)
 	public String create(@Valid @ModelAttribute("song") Song song, BindingResult result) {
 		if (result.hasErrors()) {
-			return "new.jsp";
+			return "songs/new.jsp";
 		}
 		else {
+			songService.createSong(song);
 			return "redirect:/dashboard";
 		}
 	}
 	
 	@RequestMapping("/songs/new")
-	public String newSong() {
-		return "new.jsp";
+	public String newSong(@ModelAttribute("song") Song song) {
+		return "songs/new.jsp";
 	}
 	
 	@RequestMapping("/songs/{id}")
@@ -56,7 +57,7 @@ public class SongsController {
 		Song song = songService.findSong(id);
 		if (song != null) {
 			model.addAttribute("song", song);
-			return "show.jsp";
+			return "songs/show.jsp";
 		}
 		else {
 			return "redirect:/dashboard";
@@ -70,19 +71,23 @@ public class SongsController {
 	}
 	
 	@RequestMapping("/search")
-	public String searchResults(@RequestParam(value="search") String search, Model model) {
-		List<Song> results = songService.artistSearch(search);
-		model.addAttribute("results", results);
-		return "search.jsp";
+	public String searchResults(@RequestParam(value="search", required=false) String search, Model model) {
+		if (search != null) {
+			List<Song> results = songService.artistSearch(search);
+			model.addAttribute("results", results);
+			return "songs/search.jsp";
+		}
+		else {
+			return "redirect:/dashboard";
+		}
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.POST)
-	public String search(@RequestParam(value="search") String search, Model model) {
+	public String search(@RequestParam("search") String search) {
 		if (search.isEmpty()) {
 			return "redirect:/dashboard";
 		}
 		else {
-			model.addAttribute("search", search);
 			return "redirect:/search";
 		}
 	}
@@ -91,6 +96,6 @@ public class SongsController {
 	public String topTen(Model model) {
 		List<Song> topTen = songService.topTenSongs();
 		model.addAttribute("topTen", topTen);
-		return "topTen.jsp";
+		return "songs/topTen.jsp";
 	}
 }

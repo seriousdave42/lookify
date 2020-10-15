@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Lookify!</title>
+<title>Search</title>
 </head>
 <body>
 	<table>
@@ -18,7 +18,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${songs}" var="song">
+			<c:forEach items="${topTen}" var="song">
 				<tr>
 					<td><a href="/songs/${song.id}"><c:out value="${song.title}"/></a></td>
 					<td><c:out value="${song.artist}"/></td>
@@ -34,13 +34,6 @@
 		</tbody>
 	</table>
 	<br>
-	<a href="/songs/new">Add Song</a>
-	<span>  |  </span>
-	<a href="/search/topTen">Top Songs</a>
-	<br><br>
-	<form action="/search" method=POST>
-		<input type="text" name="search">
-		<input type="submit" value="Search">
-	</form>
+	<a href="/dashboard">Home</a>
 </body>
 </html>

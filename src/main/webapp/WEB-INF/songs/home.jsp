@@ -11,6 +11,8 @@
 	<br>
 	<br>
 	<br>
-	<a href="/dashboard" style="text-align:center">Start Looking!</a>
+	<p style="text-align:center">
+		<a href="/dashboard">Start Looking!</a>
+	</p>
 </body>
 </html>
